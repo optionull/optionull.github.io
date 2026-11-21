@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>optionull · Small, native macOS apps</title>
+<meta name="description" content="optionull makes small, native macOS apps: reel records app demos from a script, undertone makes wallpapers that follow your theme, yabar puts yabai in the menu bar.">
+<link rel="canonical" href="https://optionull.app/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://optionull.app/">
+<meta property="og:site_name" content="optionull">
+<meta property="og:title" content="optionull · Small, native macOS apps">
+<meta property="og:description" content="Small, native macOS apps, open source, installed with Homebrew.">
+<meta name="twitter:card" content="summary">
+<meta name="color-scheme" content="dark light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0D11'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%232EE6C5' stroke-width='6'/%3E%3Cpath d='M20 44 44 20' stroke='%234C7DFF' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #090B0F; --card: rgba(255,255,255,0.04); --line: rgba(255,255,255,0.09);
+    --text: #E8EDF3; --muted: #97A2B1; --teal: #2EE6C5; --blue: #4C7DFF;
+    --glow1: rgba(46,230,197,0.12); --glow2: rgba(76,125,255,0.20);
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #F7F8FA; --card: #FFFFFF; --line: rgba(10,20,40,0.10);
+      --text: #12161C; --muted: #566070; --teal: #0A8F78; --blue: #2F5BD8;
+      --glow1: rgba(46,230,197,0.14); --glow2: rgba(76,125,255,0.12);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; color: var(--text); font: 17px/1.55 var(--sans);
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(at 8% 10%, var(--glow1) 0, transparent 50%),
+      radial-gradient(at 92% 4%, var(--glow2) 0, transparent 48%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 72px 0 40px; }
+  h1 { margin: 0 0 12px; font-size: clamp(40px, 8vw, 64px); line-height: 1.05; letter-spacing: -0.03em; }
+  h1 span { color: var(--teal); }
+  .lede { margin: 0; max-width: 34em; font-size: 20px; color: var(--muted); }
+  h2 { margin: 56px 0 16px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .card {
+    display: flex; flex-direction: column; gap: 8px; padding: 22px; text-decoration: none;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    transition: border-color .15s, transform .15s;
+  }
+  .card:hover, .card:focus-visible { border-color: var(--teal); transform: translateY(-2px); outline: none; }
+  .card h3 { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
+  .card p { margin: 0; flex: 1; color: var(--muted); font-size: 16px; }
+  .card .host { font: 14px var(--mono); color: var(--blue); }
+  .card.out .host { color: var(--teal); }
+  pre {
+    margin: 0; padding: 18px 20px; overflow-x: auto; font: 15px/1.7 var(--mono);
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  }
+  pre b { color: var(--teal); font-weight: 400; }
+  .note { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
+  footer { margin: 72px 0 48px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
+  footer a { margin-right: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>option<span>ull</span></h1>
+    <p class="lede">Small, native macOS apps. Open source, signed and notarized, installed with Homebrew.</p>
+  </header>
+
+  <main>
+    <h2>Apps</h2>
+    <div class="grid">
+      <a class="card" href="https://reel.optionull.app/">
+        <h3>reel</h3>
+        <p>Record macOS app demos from a script: video with sound, GIFs and captions.</p>
+        <span class="host">reel.optionull.app</span>
+      </a>
+      <a class="card" href="https://undertone.optionull.app/">
+        <h3>undertone</h3>
+        <p>Generated wallpapers that hide the notch and screen borders, follow your theme and change on a schedule.</p>
+        <span class="host">undertone.optionull.app</span>
+      </a>
+      <a class="card" href="https://yabar.optionull.app/">
+        <h3>yabar</h3>
+        <p>Menu bar spaces and window stack indicators for yabai.</p>
+        <span class="host">yabar.optionull.app</span>
+      </a>
+      <a class="card out" href="https://heed.build/">
+        <h3>heed</h3>
+        <p>A native macOS app that feels like a TUI, with vim keys, for running coding agents.</p>
+        <span class="host">heed.build ↗</span>
+      </a>
+    </div>
+
+    <h2>Install</h2>
+    <pre><b>$</b> brew tap optionull/tap
+<b>$</b> brew install --cask optionull/tap/reel</pre>
+    <p class="note">Every app is a cask in the same tap. Swap <code>reel</code> for <code>undertone</code> or <code>yabar</code>.</p>
+  </main>
+
+  <footer>
+    <a href="https://github.com/optionull">GitHub</a>
+    <a href="https://github.com/optionull/homebrew-tap">Homebrew tap</a>
+  </footer>
+</div>
+</body>
+</html>
