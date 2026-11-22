@@ -3,112 +3,411 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>optionull · Small, native macOS apps</title>
-<meta name="description" content="optionull makes small, native macOS apps: reel records app demos from a script, undertone makes wallpapers that follow your theme, yabar puts yabai in the menu bar.">
+<title>optionull · Mac apps by Martijn Laarman</title>
+<meta name="description" content="A collection of macOS apps built and maintained by Martijn Laarman: reel, undertone, yabar and heed. Open source, signed and notarized, installed with Homebrew.">
 <link rel="canonical" href="https://optionull.app/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://optionull.app/">
 <meta property="og:site_name" content="optionull">
-<meta property="og:title" content="optionull · Small, native macOS apps">
-<meta property="og:description" content="Small, native macOS apps, open source, installed with Homebrew.">
-<meta name="twitter:card" content="summary">
-<meta name="color-scheme" content="dark light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0D11'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%232EE6C5' stroke-width='6'/%3E%3Cpath d='M20 44 44 20' stroke='%234C7DFF' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta property="og:title" content="optionull · Mac apps by Martijn Laarman">
+<meta property="og:description" content="reel, undertone, yabar and heed: small, native, open-source macOS apps.">
+<meta property="og:image" content="https://optionull.app/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="optionull: Mac apps by Martijn Laarman">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#08090B">
+<meta name="color-scheme" content="dark">
+<script>document.documentElement.className+=" js"</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>
   :root {
-    --bg: #090B0F; --card: rgba(255,255,255,0.04); --line: rgba(255,255,255,0.09);
-    --text: #E8EDF3; --muted: #97A2B1; --teal: #2EE6C5; --blue: #4C7DFF;
-    --glow1: rgba(46,230,197,0.12); --glow2: rgba(76,125,255,0.20);
-    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
-    --mono: ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #F7F8FA; --card: #FFFFFF; --line: rgba(10,20,40,0.10);
-      --text: #12161C; --muted: #566070; --teal: #0A8F78; --blue: #2F5BD8;
-      --glow1: rgba(46,230,197,0.14); --glow2: rgba(76,125,255,0.12);
-    }
+    --bg: #08090B;
+    --win: #101218;
+    --win2: #161922;
+    --line: rgba(255, 255, 255, 0.10);
+    --text: #E9ECF1;
+    --muted: #A3ACB9;
+    --dim: #8A94A3;
+    --teal: #2EE6C5;
+    --violet: #8F7BFF;
+    --amber: #FFB03D;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Helvetica Neue", sans-serif;
+    --round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 20px; }
   body {
-    margin: 0; min-height: 100vh; color: var(--text); font: 17px/1.55 var(--sans);
-    background-color: var(--bg);
-    background-image:
-      radial-gradient(at 8% 10%, var(--glow1) 0, transparent 50%),
-      radial-gradient(at 92% 4%, var(--glow2) 0, transparent 48%);
-    background-attachment: fixed;
-    -webkit-font-smoothing: antialiased;
+    margin: 0; min-height: 100vh; color: var(--text); background: var(--bg);
+    font: 17px/1.55 var(--sans); -webkit-font-smoothing: antialiased;
   }
   a { color: inherit; }
-  .wrap { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-  header { padding: 72px 0 40px; }
-  h1 { margin: 0 0 12px; font-size: clamp(40px, 8vw, 64px); line-height: 1.05; letter-spacing: -0.03em; }
-  h1 span { color: var(--teal); }
-  .lede { margin: 0; max-width: 34em; font-size: 20px; color: var(--muted); }
-  h2 { margin: 56px 0 16px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-  .card {
-    display: flex; flex-direction: column; gap: 8px; padding: 22px; text-decoration: none;
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-    transition: border-color .15s, transform .15s;
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* The wallpaper: undertone's aurora, kept grainy, with the bottom pulled down so the dock stays legible. */
+  .wall, .wall::before, .wall::after { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+  .wall { background: var(--bg) url("assets/art/aurora.jpg") center top / cover no-repeat; }
+  .wall::before {
+    content: ""; opacity: 0.22; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 -.2'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .card:hover, .card:focus-visible { border-color: var(--teal); transform: translateY(-2px); outline: none; }
-  .card h3 { margin: 0; font-size: 22px; letter-spacing: -0.01em; }
-  .card p { margin: 0; flex: 1; color: var(--muted); font-size: 16px; }
-  .card .host { font: 14px var(--mono); color: var(--blue); }
-  .card.out .host { color: var(--teal); }
-  pre {
-    margin: 0; padding: 18px 20px; overflow-x: auto; font: 15px/1.7 var(--mono);
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  .wall::after { background: linear-gradient(to bottom, rgba(8,9,11,0.42) 0, rgba(8,9,11,0.2) 40%, rgba(8,9,11,0.55) 78%, rgba(8,9,11,0.92) 100%); }
+
+  .desk { max-width: 1180px; margin: 0 auto; padding: 64px 24px 170px; }
+
+  /* The wordmark: option + null share the n, cut on a diagonal. */
+    .word {
+    margin: 0; font: 700 clamp(54px, 10vw, 132px)/0.95 var(--round); letter-spacing: -0.03em; color: var(--text);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) drop-shadow(0 6px 28px rgba(0,0,0,0.6));
   }
-  pre b { color: var(--teal); font-weight: 400; }
-  .note { margin: 12px 0 0; color: var(--muted); font-size: 15px; }
-  footer { margin: 72px 0 48px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
-  footer a { margin-right: 18px; }
+  .word i {
+    font-style: normal; color: transparent;
+    background: linear-gradient(118deg, #E9ECF1 0 49.5%, #2EE6C5 50.5% 100%); -webkit-background-clip: text; background-clip: text;
+  }
+  .word b {
+    font-weight: 700; color: transparent;
+    background: linear-gradient(90deg, #2EE6C5, #8F7BFF 58%, #FFB03D); -webkit-background-clip: text; background-clip: text;
+  }
+
+  /* Windows */
+  .win {
+    background: var(--win); border: 1px solid var(--line); border-radius: 13px; overflow: hidden;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 28px 70px rgba(0,0,0,0.55);
+    transition: box-shadow .25s ease, border-color .25s ease;
+  }
+  .win.front { border-color: rgba(255,176,61,0.65); box-shadow: 0 0 0 1px rgba(255,176,61,0.35), 0 28px 70px rgba(0,0,0,0.55); }
+  .bar { display: flex; align-items: center; height: 38px; padding: 0 14px; background: var(--win2); border-bottom: 1px solid var(--line); position: relative; }
+  .lights { display: flex; gap: 8px; }
+  .lights i { width: 12px; height: 12px; border-radius: 50%; background: #3A3F4B; }
+  .win.front .lights i:nth-child(1) { background: #FF5F57; }
+  .win.front .lights i:nth-child(2) { background: #FEBC2E; }
+  .win.front .lights i:nth-child(3) { background: #28C840; }
+  .bar .title { position: absolute; left: 0; right: 0; text-align: center; font-size: 13px; color: var(--dim); pointer-events: none; }
+  .body { padding: 24px; }
+
+  .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .top { align-items: start; row-gap: 28px; }
+  .brand { grid-column: 1 / -1; grid-row: 1; display: flex; align-items: center; gap: clamp(12px, 2vw, 24px); }
+  .brand .mark { width: clamp(64px, 9.6vw, 140px); height: auto; flex: none; filter: drop-shadow(0 8px 26px rgba(0,0,0,0.4)); }
+  .hello { grid-column: 1 / -1; grid-row: 2; }
+  .term { grid-column: 1 / -1; grid-row: 3; }
+  #apps { scroll-margin-top: 20px; }
+  .apps { margin-top: 40px; }
+  #heed { grid-column: 1 / 8; }
+  #yabar { grid-column: 8 / 13; margin-top: 44px; }
+  #undertone { grid-column: 1 / 6; }
+  #reel { grid-column: 6 / 13; margin-top: 32px; }
+
+  /* Intro */
+  .side { float: right; margin: 0 0 14px 28px; width: min(100%, 330px); text-align: right; }
+  .avatar { display: block; width: 124px; margin: 0 0 12px auto; }
+  .avatar img { width: 100%; height: auto; aspect-ratio: 1; border-radius: 22%; box-shadow: 0 10px 28px rgba(0,0,0,0.42); }
+  .avatar:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; border-radius: 24%; }
+  .glass {
+    padding: 22px 24px 24px; border-radius: 18px; text-shadow: none;
+    background: rgba(12,14,20,0.78); border: 1px solid rgba(255,255,255,0.16);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.10) inset, 0 24px 60px rgba(0,0,0,0.35);
+  }
+  @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .glass { background: rgba(12,14,20,0.46); -webkit-backdrop-filter: blur(22px) saturate(1.25); backdrop-filter: blur(22px) saturate(1.25); }
+  }
+  .note { margin: 0; font-size: 22px; line-height: 1.5; color: var(--text); max-width: 58ch; }
+  .by { margin: 0; font-size: 14.5px; line-height: 1.5; color: #E3E8EF; }
+  .by a { text-decoration-color: rgba(255,255,255,0.35); text-underline-offset: 3px; }
+  .glass::after { content: ""; display: block; clear: both; }
+  .glass .btn.gh { margin-top: 22px; }
+  .glass .term { clear: both; margin-top: 22px; text-align: left; }
+  .by a { color: var(--text); text-decoration-color: rgba(255,255,255,0.3); text-underline-offset: 3px; }
+  .by a:hover { text-decoration-color: var(--teal); }
+
+  /* Terminal */
+  .term .body { background: #0B0C10; font: 14.5px/1.75 var(--mono); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .term .c { color: var(--dim); }
+  .term .p { color: var(--teal); user-select: none; }
+  .term .cur { display: inline-block; width: 8px; height: 16px; background: var(--text); vertical-align: -2px; margin-left: 2px; animation: blink 1.1s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+  .term pre { margin: 0; font: inherit; white-space: pre-wrap; word-break: break-word; min-width: 0; }
+
+  /* Apps */
+  .head { display: flex; gap: 16px; align-items: center; margin-bottom: 18px; }
+  .head img { width: 56px; height: 56px; border-radius: 14px; flex: none; }
+  .head h2 { margin: 0; font: 700 24px/1.15 var(--round); letter-spacing: -0.02em; }
+  .head p { margin: 4px 0 0; color: var(--muted); font-size: 15.5px; line-height: 1.45; }
+  .art { width: 100%; border-radius: 9px; border: 1px solid var(--line); background: #000; }
+  .art.strip { background: #0C1426; padding: 8px 6px; }
+  /* Calm by default: an app's picture opens when the app is selected (hover, focus, tap, or the dock). */
+  .media { display: grid; grid-template-rows: 1fr; }
+  .media-in { min-height: 0; overflow: hidden; }
+  .js .apps .win { cursor: pointer; }
+  .js .apps .win:not(.front) .media { grid-template-rows: 0fr; }
+  .js .apps .win:not(.front) .media-in { opacity: 0; }
+  .js .media { transition: grid-template-rows .4s ease; }
+  .js .media-in { transition: opacity .3s ease; }
+  .js .apps .win .actions a, .js .apps .win .cmd, .js .apps .win .styles { cursor: auto; }
+  .js .apps .win .actions a { cursor: pointer; }
+  .agents { margin: 10px 0 0 !important; font-size: 13.5px !important; color: var(--muted); }
+  .agents b { color: var(--text); font-weight: 600; }
+  /* undertone's eleven styles */
+  .stage { margin: 0; }
+  .stage img { width: 100%; height: auto; aspect-ratio: 640 / 416; border-radius: 9px; border: 1px solid var(--line); background: #000; transition: opacity .18s ease; }
+  .stage figcaption { margin-top: 10px; font-size: 14.5px; line-height: 1.4; color: var(--muted); }
+  .stage figcaption b { color: var(--text); font-size: 17px; }
+  .stage figcaption i { font-style: normal; color: var(--muted); }
+  .stage figcaption span { display: block; margin-top: 2px; }
+  .thumbs { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; margin-top: 12px; }
+  .thumb { display: block; padding: 0; border: 2px solid transparent; border-radius: 7px; background: none; cursor: pointer; overflow: hidden; line-height: 0; }
+  .thumb img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 5px; opacity: .78; transition: opacity .15s; }
+  .thumb:hover img, .thumb:focus-visible img { opacity: 1; }
+  .thumb:focus-visible { outline: none; border-color: var(--text); }
+  .thumb.on { border-color: var(--teal); }
+  .thumb.on img { opacity: 1; }
+  .stylebar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; flex: none; }
+  .toggle button { border: 0; background: transparent; color: var(--muted); font: 600 13px var(--sans); padding: 5px 12px; cursor: pointer; }
+  .toggle button.on { background: var(--text); color: #0B0C10; }
+  .toggle button:focus-visible { outline: 2px solid var(--text); outline-offset: -2px; }
+  figure { margin: 0 0 12px; }
+  figcaption { margin-top: 6px; color: var(--muted); font-size: 13px; }
+  .tag { display: inline-block; vertical-align: 3px; margin-left: 6px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; font: 600 12px/1.3 var(--mono); letter-spacing: 0.06em; color: var(--amber); }
+  .script { margin: 0; padding: 16px 18px; border-radius: 9px; border: 1px solid var(--line); background: #0B0C10; font: 13.5px/1.7 var(--mono); color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .script .k { color: var(--teal); }
+  .script .s { color: #F3C98B; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 0; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px; min-height: 38px; padding: 0 16px; border-radius: 9px; font-size: 15px; font-weight: 600;
+    text-decoration: none; border: 1px solid var(--line); background: var(--win2); color: var(--text);
+  }
+  .btn:hover, .btn:focus-visible { border-color: rgba(255,255,255,0.35); outline: none; }
+  .ico { width: 17px; height: 17px; flex: none; }
+  .ico.line { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; }
+  .btn.gh { min-height: 46px; padding: 0 20px; font-size: 16px; background: #0D1017; border-color: rgba(255,255,255,0.22); }
+  .btn.gh .ico { width: 20px; height: 20px; }
+  .btn.gh:hover, .btn.gh:focus-visible { border-color: var(--text); background: #12151D; }
+  .btn.primary { background: var(--text); color: #0B0C10; border-color: var(--text); }
+  .btn.primary:hover, .btn.primary:focus-visible { background: #fff; }
+  .cmd { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 8px 8px 8px 14px; border-radius: 9px; background: #0B0C10; border: 1px solid var(--line); }
+  .cmd code { flex: 1; min-width: 0; font: 13.5px/1.4 var(--mono); color: var(--muted); white-space: normal; overflow-wrap: anywhere; }
+  .cmd code b { color: var(--teal); font-weight: 400; user-select: none; }
+  .copy { flex: none; border: 1px solid var(--line); background: var(--win2); color: var(--text); font: 600 13px var(--sans); padding: 6px 11px; border-radius: 7px; cursor: pointer; }
+  .copy:hover, .copy:focus-visible { border-color: rgba(255,255,255,0.35); outline: none; }
+  .ext { color: var(--dim); font-size: 13px; }
+
+  /* Dock */
+  .dock {
+    position: fixed; z-index: 30; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 12px; padding: 10px 14px;
+    background: rgba(12,13,18,0.82); border: 1px solid rgba(255,255,255,0.14); border-radius: 22px; box-shadow: 0 18px 50px rgba(0,0,0,0.5);
+  }
+  .dock a { position: relative; display: block; width: 58px; height: 58px; border-radius: 14px; transition: transform .18s ease; }
+  .dock a img { width: 100%; height: 100%; border-radius: 14px; }
+  .dock a:hover, .dock a:focus-visible { transform: translateY(-8px) scale(1.12); outline: none; }
+  .dock a:focus-visible img { box-shadow: 0 0 0 2px var(--text); }
+  .dock a::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: rgba(255,255,255,0.55); }
+  .dock .tip { position: absolute; left: 50%; top: -38px; transform: translateX(-50%); padding: 4px 10px; border-radius: 7px; background: #000; border: 1px solid var(--line); font-size: 13px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .dock a:hover .tip, .dock a:focus-visible .tip { opacity: 1; }
+
+  .foot { margin: 56px 0 0; color: var(--muted); font-size: 14.5px; }
+  .foot a { color: var(--text); }
+
+  @media (max-width: 960px) {
+    .hello, .brand, .term, #reel, #undertone, #yabar, #heed { grid-column: 1 / -1; margin-top: 0; }
+    .brand, .hello, .term { grid-row: auto; }
+    .side { float: none; width: auto; text-align: left; margin: 0 0 16px; }
+    .avatar { width: 88px; margin: 0 0 10px; }
+    .note { font-size: 19px; }
+    .apps { margin-top: 24px; }
+  }
+  @media (max-width: 520px) {
+    body { font-size: 16px; }
+    .desk { padding-left: 16px; padding-right: 16px; }
+    .note { font-size: 18px; }
+    .body { padding: 18px; }
+    .dock { gap: 8px; padding: 8px 10px; border-radius: 18px; }
+    .dock a { width: 48px; height: 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .win, .dock a, .js .media, .js .media-in { transition: none; }
+    .term .cur { animation: none; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>option<span>ull</span></h1>
-    <p class="lede">Small, native macOS apps. Open source, signed and notarized, installed with Homebrew.</p>
-  </header>
+<div class="wall" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-github" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c1.9 1.9 2.9 4.1 2.9 6.5S9.9 12.6 8 14.5C6.1 12.6 5.1 10.4 5.1 8S6.1 3.4 8 1.5z"/></symbol>
+</defs></svg>
 
-  <main>
-    <h2>Apps</h2>
-    <div class="grid">
-      <a class="card" href="https://reel.optionull.app/">
-        <h3>reel</h3>
-        <p>Record macOS app demos from a script: video with sound, GIFs and captions.</p>
-        <span class="host">reel.optionull.app</span>
-      </a>
-      <a class="card" href="https://undertone.optionull.app/">
-        <h3>undertone</h3>
-        <p>Generated wallpapers that hide the notch and screen borders, follow your theme and change on a schedule.</p>
-        <span class="host">undertone.optionull.app</span>
-      </a>
-      <a class="card" href="https://yabar.optionull.app/">
-        <h3>yabar</h3>
-        <p>Menu bar spaces and window stack indicators for yabai.</p>
-        <span class="host">yabar.optionull.app</span>
-      </a>
-      <a class="card out" href="https://heed.build/">
-        <h3>heed</h3>
-        <p>A native macOS app that feels like a TUI, with vim keys, for running coding agents.</p>
-        <span class="host">heed.build ↗</span>
-      </a>
-    </div>
 
-    <h2>Install</h2>
-    <pre><b>$</b> brew tap optionull/tap
-<b>$</b> brew install --cask optionull/tap/reel</pre>
-    <p class="note">Every app is a cask in the same tap. Swap <code>reel</code> for <code>undertone</code> or <code>yabar</code>.</p>
-  </main>
+<main class="desk" id="top">
+  <div class="grid top">
+    <div class="brand"><img class="mark" src="assets/optionull-mark.svg" alt="" width="124" height="124"><h1 class="word" aria-label="optionull">optio<i>n</i><b>ull</b></h1></div>
 
-  <footer>
-    <a href="https://github.com/optionull">GitHub</a>
-    <a href="https://github.com/optionull/homebrew-tap">Homebrew tap</a>
-  </footer>
-</div>
+    <section class="hello" id="hello" aria-label="About">
+      <div class="glass">
+        <div class="side">
+          <a class="avatar" href="https://github.com/Mpdreamz" aria-label="Martijn Laarman on GitHub"><img src="assets/martijn.jpg" alt="Martijn Laarman" width="288" height="288"></a>
+          <p class="by">Built by <a href="https://github.com/Mpdreamz">Martijn Laarman</a> &middot; open source, signed and notarized.</p>
+        </div>
+        <p class="note">Hi! You've wandered into my little shelf of macOS apps. I maintain every one of them and use them daily, mostly to get more done with fewer clicks. If you're a Linux kid like me, stuck on Apple's gorgeous silicon, I think you'll feel right at home.</p>
+        <a class="btn gh" href="https://github.com/optionull"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>optionull on GitHub</a>
+        <section class="win term" id="install" aria-label="Install">
+          <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">zsh</span></div>
+          <div class="body">
+<pre id="tapcmd"><span class="p">$</span> brew tap optionull/tap
+<span class="p">$</span> brew install --cask optionull/tap/<span class="c">&lt;app&gt;</span><span class="cur" aria-hidden="true"></span></pre>
+            <button class="copy" type="button" data-copy="brew tap optionull/tap">Copy tap line</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="grid apps" id="apps">
+    <section class="win front" id="heed" aria-labelledby="heed-h">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">heed</span></div>
+      <div class="body">
+        <div class="head"><img src="assets/apps/heed.png" alt="" width="56" height="56"><div><h2 id="heed-h">heed <span class="tag">ADE</span></h2><p>An agentic development environment: keyboard-driven, and it doesn't stop at worktree sessions. An autopilot system to shepherd your work to completion, a real memory system of summaries and decisions, and SO much more.</p><p class="agents"><b>Bring your own agent:</b> Claude, Codex, Cursor, pi, opencode and more.</p></div></div>
+        <div class="media"><div class="media-in"><img class="art" src="assets/art/heed-app.jpg" alt="heed's sessions view: sessions grouped by what needs you, a Claude agent working beside a shell, and the worktree and pull request panel" width="1500" height="938" loading="lazy"></div></div>
+        <div class="actions"><a class="btn primary" href="https://heed.build/"><svg class="ico line" aria-hidden="true"><use href="#i-globe"/></svg>heed.build</a><a class="btn" href="https://github.com/heed-build/heed"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></div>
+        <div class="cmd"><code><b>$</b> brew install --cask heed-build/tap/heed</code><button class="copy" type="button" data-copy="brew install --cask heed-build/tap/heed">Copy</button></div>
+        <p class="ext">heed lives in its own org and tap.</p>
+      </div>
+    </section>
+
+    <section class="win" id="yabar" aria-labelledby="yabar-h">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">yabar</span></div>
+      <div class="body">
+        <div class="head"><img src="assets/apps/yabar.png" alt="" width="56" height="56"><div><h2 id="yabar-h">yabar</h2><p>yabai's spaces and window stacks in the menu bar, with i3-style tabs on every stack and a launcher.</p></div></div>
+        <div class="media"><div class="media-in">
+        <figure><img class="art strip" src="assets/art/yabar-tabs.jpg" alt="yabar's i3-style stack tabs: a terminal, a pull request with a notification, Today and Music" width="975" height="54" loading="lazy"><figcaption>i3-style tabs on a stack</figcaption></figure>
+        <figure><img class="art strip" src="assets/art/yabar-menubar.png" alt="yabar in the menu bar: spaces named code, web and chat" width="810" height="60" loading="lazy"><figcaption>Spaces in the menu bar</figcaption></figure>
+        </div></div>
+        <div class="actions"><a class="btn primary" href="https://yabar.optionull.app/"><svg class="ico line" aria-hidden="true"><use href="#i-globe"/></svg>yabar.optionull.app</a><a class="btn" href="https://github.com/optionull/yabar"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></div>
+        <div class="cmd"><code><b>$</b> brew install --cask optionull/tap/yabar</code><button class="copy" type="button" data-copy="brew install --cask optionull/tap/yabar">Copy</button></div>
+      </div>
+    </section>
+
+    <section class="win" id="undertone" aria-labelledby="undertone-h">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">undertone</span></div>
+      <div class="body">
+        <div class="head"><img src="assets/apps/undertone.png" alt="" width="56" height="56"><div><h2 id="undertone-h">undertone</h2><p>Generated wallpapers that follow your theme, change on a schedule and hide the notch, with a matching screen saver that drifts the same picture while your Mac is locked.</p></div></div>
+        <div class="media"><div class="media-in">
+          <div class="styles" id="styles">
+            <figure class="stage"><img id="stage-img" src="assets/art/styles/p/mesh-dark.jpg" alt="Mesh in Ember" width="640" height="416" loading="lazy"><figcaption id="stage-cap"><b>Mesh</b> <i>in Ember</i><span>Soft glows over a dark base</span></figcaption></figure>
+            <div class="thumbs" role="group" aria-label="Undertone styles"><button type="button" class="thumb on" data-style="mesh" data-name="Mesh" data-tone="Ember" data-desc="Soft glows over a dark base" aria-label="Mesh in Ember" aria-pressed="true"><img src="assets/art/styles/t/mesh-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="flow" data-name="Flow" data-tone="Dusk" data-desc="Marbled, slowly folding colour" aria-label="Flow in Dusk" aria-pressed="false"><img src="assets/art/styles/t/flow-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="waves" data-name="Waves" data-tone="Tide" data-desc="Layered ribbons with a lit rim" aria-label="Waves in Tide" aria-pressed="false"><img src="assets/art/styles/t/waves-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="orbs" data-name="Orbs" data-tone="Aurora" data-desc="Lit spheres" aria-label="Orbs in Aurora" aria-pressed="false"><img src="assets/art/styles/t/orbs-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="rings" data-name="Rings" data-tone="Citrus" data-desc="Bands round an off-screen centre" aria-label="Rings in Citrus" aria-pressed="false"><img src="assets/art/styles/t/rings-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="dunes" data-name="Dunes" data-tone="Dusk" data-desc="Stacked hills fading into haze" aria-label="Dunes in Dusk" aria-pressed="false"><img src="assets/art/styles/t/dunes-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="contour" data-name="Contour" data-tone="Glacier" data-desc="Topographic lines" aria-label="Contour in Glacier" aria-pressed="false"><img src="assets/art/styles/t/contour-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="silk" data-name="Silk" data-tone="Ember" data-desc="Twisting ribbons with a sheen" aria-label="Silk in Ember" aria-pressed="false"><img src="assets/art/styles/t/silk-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="aurora" data-name="Aurora" data-tone="Aurora" data-desc="Curtains of light" aria-label="Aurora in Aurora" aria-pressed="false"><img src="assets/art/styles/t/aurora-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="bauhaus" data-name="Bauhaus" data-tone="Moss" data-desc="A grid of quarter and half circles" aria-label="Bauhaus in Moss" aria-pressed="false"><img src="assets/art/styles/t/bauhaus-dark.jpg" alt="" width="200" height="130" loading="lazy"></button><button type="button" class="thumb" data-style="blobs" data-name="Blobs" data-tone="Dusk" data-desc="A lava lamp" aria-label="Blobs in Dusk" aria-pressed="false"><img src="assets/art/styles/t/blobs-dark.jpg" alt="" width="200" height="130" loading="lazy"></button></div>
+            <div class="stylebar"><span>Eleven styles, every picture generated</span><span class="toggle" role="group" aria-label="Appearance"><button type="button" class="on" data-appearance="dark" aria-pressed="true">Dark</button><button type="button" data-appearance="light" aria-pressed="false">Light</button></span></div>
+          </div>
+        </div></div>
+        <div class="actions"><a class="btn primary" href="https://undertone.optionull.app/"><svg class="ico line" aria-hidden="true"><use href="#i-globe"/></svg>undertone.optionull.app</a><a class="btn" href="https://github.com/optionull/undertone"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></div>
+        <div class="cmd"><code><b>$</b> brew install --cask optionull/tap/undertone</code><button class="copy" type="button" data-copy="brew install --cask optionull/tap/undertone">Copy</button></div>
+      </div>
+    </section>
+
+    <section class="win" id="reel" aria-labelledby="reel-h">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">reel</span></div>
+      <div class="body">
+        <div class="head"><img src="assets/apps/reel.png" alt="" width="56" height="56"><div><h2 id="reel-h">reel</h2><p>Record demos of macOS apps and web pages from a script: video with sound, GIFs and captions.</p></div></div>
+        <div class="media"><div class="media-in">
+        <figure>
+<pre class="script" aria-label="A reel script"><span class="k">Screen</span> code
+<span class="k">Output</span> //docs/media/code.mp4
+
+<span class="k">Code</span> code/SpeechClock.swift
+<span class="k">Go</span> <span class="s">"public mutating func say"</span>
+<span class="k">Focus</span> lines 9-20
+<span class="k">Say</span> <span class="s">"This is how reel keeps one narrated line from talking over the next."</span>
+<span class="k">Mark</span> <span class="s">"max(now, speechEnd)"</span> 1
+<span class="k">Callout</span> <span class="s">"max(now, speechEnd)"</span> <span class="s">"when it's reached, or after the line before"</span></pre>
+          <figcaption>A reel: plain text in, narrated video out</figcaption>
+        </figure>
+        </div></div>
+        <div class="actions"><a class="btn primary" href="https://reel.optionull.app/"><svg class="ico line" aria-hidden="true"><use href="#i-globe"/></svg>reel.optionull.app</a><a class="btn" href="https://github.com/optionull/reel"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></div>
+        <div class="cmd"><code><b>$</b> brew install --cask optionull/tap/reel</code><button class="copy" type="button" data-copy="brew install --cask optionull/tap/reel">Copy</button></div>
+      </div>
+    </section>
+  </div>
+
+  <p class="foot">Everything here is open source. <a href="https://github.com/optionull">github.com/optionull</a></p>
+</main>
+
+<nav class="dock" aria-label="Apps">
+  <a href="#heed" data-app="heed" aria-label="heed"><img src="assets/apps/heed.png" alt="" width="58" height="58"><span class="tip">heed</span></a>
+  <a href="#yabar" data-app="yabar" aria-label="yabar"><img src="assets/apps/yabar.png" alt="" width="58" height="58"><span class="tip">yabar</span></a>
+  <a href="#undertone" data-app="undertone" aria-label="undertone"><img src="assets/apps/undertone.png" alt="" width="58" height="58"><span class="tip">undertone</span></a>
+  <a href="#reel" data-app="reel" aria-label="reel"><img src="assets/apps/reel.png" alt="" width="58" height="58"><span class="tip">reel</span></a>
+</nav>
+
+<script>
+(function () {
+  // Selecting an app opens its picture and puts the one warm ring on it: hover (with a short intent delay so a
+  // passing pointer does not flicker the page), keyboard focus, a tap, or the dock. The last selection stays.
+  var wins = document.querySelectorAll('.apps .win');
+  var timer;
+  function front(el) { wins.forEach(function (w) { w.classList.toggle('front', w === el); }); }
+  function soon(el) { clearTimeout(timer); timer = setTimeout(function () { front(el); }, 140); }
+  var canHover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+  wins.forEach(function (w) {
+    w.addEventListener('pointerdown', function () { clearTimeout(timer); front(w); });
+    w.addEventListener('focusin', function () { front(w); });
+    if (canHover) {
+      w.addEventListener('pointerenter', function () { soon(w); });
+      w.addEventListener('pointerleave', function () { clearTimeout(timer); });
+    }
+  });
+  document.querySelectorAll('.dock a').forEach(function (a) {
+    var el = document.getElementById(a.dataset.app);
+    if (!el) return;
+    a.addEventListener('click', function () { front(el); });
+    if (canHover) { a.addEventListener('pointerenter', function () { soon(el); }); a.addEventListener('pointerleave', function () { clearTimeout(timer); }); }
+  });
+
+  // undertone's styles: hover, focus or tap a thumbnail to preview it; the toggle flips every picture between dark and light.
+  var styles = document.getElementById('styles');
+  if (styles) {
+    var stage = document.getElementById('stage-img'), cap = document.getElementById('stage-cap');
+    var thumbs = styles.querySelectorAll('.thumb'), mode = 'dark', current = styles.querySelector('.thumb.on');
+    function show(t) {
+      current = t;
+      thumbs.forEach(function (x) { var on = x === t; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      stage.src = 'assets/art/styles/p/' + t.dataset.style + '-' + mode + '.jpg';
+      stage.alt = t.dataset.name + ' in ' + t.dataset.tone;
+      cap.innerHTML = '<b></b> <i></i><span></span>';
+      cap.querySelector('b').textContent = t.dataset.name; cap.querySelector('i').textContent = 'in ' + t.dataset.tone; cap.querySelector('span').textContent = t.dataset.desc;
+    }
+    var warmed = {};
+    function warm() { if (warmed[mode]) return; warmed[mode] = true; thumbs.forEach(function (t) { new Image().src = 'assets/art/styles/p/' + t.dataset.style + '-' + mode + '.jpg'; }); }
+    thumbs.forEach(function (t) {
+      t.addEventListener('click', function () { show(t); });
+      t.addEventListener('focus', function () { show(t); });
+      if (canHover) t.addEventListener('pointerenter', function () { warm(); show(t); });
+    });
+    styles.querySelectorAll('[data-appearance]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        mode = b.dataset.appearance;
+        styles.querySelectorAll('[data-appearance]').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+        thumbs.forEach(function (t) { t.querySelector('img').src = 'assets/art/styles/t/' + t.dataset.style + '-' + mode + '.jpg'; });
+        show(current);
+      });
+    });
+  }
+
+  // Copy buttons
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    var label = btn.textContent;
+    btn.addEventListener('click', function () {
+      var text = btn.dataset.copy;
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = label; }, 1400); };
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, function () {}); }
+      else { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(t); }
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
