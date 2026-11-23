@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>optionull · Mac apps by Martijn Laarman</title>
-<meta name="description" content="A collection of macOS apps built and maintained by Martijn Laarman: reel, undertone, yabar and heed. Open source, signed and notarized, installed with Homebrew.">
+<meta name="description" content="A collection of macOS apps built and maintained by Martijn Laarman: reel, undertone, yabar, heed and trim. Open source, signed and notarized, installed with Homebrew.">
 <link rel="canonical" href="https://optionull.app/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://optionull.app/">
 <meta property="og:site_name" content="optionull">
 <meta property="og:title" content="optionull · Mac apps by Martijn Laarman">
-<meta property="og:description" content="reel, undertone, yabar and heed: small, native, open-source macOS apps.">
+<meta property="og:description" content="reel, undertone, yabar, heed and trim: small, native, open-source macOS apps.">
 <meta property="og:image" content="https://optionull.app/assets/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -100,6 +100,7 @@
   #yabar { grid-column: 8 / 13; margin-top: 44px; }
   #undertone { grid-column: 1 / 6; }
   #reel { grid-column: 6 / 13; margin-top: 32px; }
+  #trim { grid-column: 1 / 9; }
 
   /* Intro */
   .side { float: right; margin: 0 0 14px 28px; width: min(100%, 330px); text-align: right; }
@@ -212,7 +213,7 @@
   .foot a { color: var(--text); }
 
   @media (max-width: 960px) {
-    .hello, .brand, .term, #reel, #undertone, #yabar, #heed { grid-column: 1 / -1; margin-top: 0; }
+    .hello, .brand, .term, #reel, #undertone, #yabar, #heed, #trim { grid-column: 1 / -1; margin-top: 0; }
     .brand, .hello, .term { grid-row: auto; }
     .side { float: none; width: auto; text-align: left; margin: 0 0 16px; }
     .avatar { width: 88px; margin: 0 0 10px; }
@@ -330,6 +331,17 @@
         <div class="cmd"><code><b>$</b> brew install --cask optionull/tap/reel</code><button class="copy" type="button" data-copy="brew install --cask optionull/tap/reel">Copy</button></div>
       </div>
     </section>
+    <section class="win" id="trim" aria-labelledby="trim-h">
+      <div class="bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="title" aria-hidden="true">trim</span></div>
+      <div class="body">
+        <div class="head"><img src="assets/apps/trim.png" alt="" width="56" height="56"><div><h2 id="trim-h">trim <span class="tag">IDE</span></h2><p>A trimmed IDE around Neovim: a file tree that knows git, language servers, a run pane and a workspace switcher, native and fast, with your editing still in nvim. It installs with shim, a lightweight nvim for single files.</p></div></div>
+        <div class="media"><div class="media-in">
+        <figure><img class="art" src="assets/art/trim-window.png" alt="trim: a file tree with git marks beside Neovim editing C#, with a status bar" width="1148" height="808" loading="lazy"><figcaption>The file tree, the editor and the status bar</figcaption></figure>
+        </div></div>
+        <div class="actions"><a class="btn primary" href="https://trim.optionull.app/"><svg class="ico line" aria-hidden="true"><use href="#i-globe"/></svg>trim.optionull.app</a><a class="btn" href="https://github.com/optionull/trim"><svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></div>
+        <div class="cmd"><code><b>$</b> brew install --cask optionull/tap/trim</code><button class="copy" type="button" data-copy="brew install --cask optionull/tap/trim">Copy</button></div>
+      </div>
+    </section>
   </div>
 
   <p class="foot">Everything here is open source. <a href="https://github.com/optionull">github.com/optionull</a></p>
@@ -340,6 +352,7 @@
   <a href="#yabar" data-app="yabar" aria-label="yabar"><img src="assets/apps/yabar.png" alt="" width="58" height="58"><span class="tip">yabar</span></a>
   <a href="#undertone" data-app="undertone" aria-label="undertone"><img src="assets/apps/undertone.png" alt="" width="58" height="58"><span class="tip">undertone</span></a>
   <a href="#reel" data-app="reel" aria-label="reel"><img src="assets/apps/reel.png" alt="" width="58" height="58"><span class="tip">reel</span></a>
+  <a href="#trim" data-app="trim" aria-label="trim"><img src="assets/apps/trim.png" alt="" width="58" height="58"><span class="tip">trim</span></a>
 </nav>
 
 <script>
